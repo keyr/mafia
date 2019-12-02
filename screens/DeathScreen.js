@@ -1,13 +1,18 @@
 import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { Button } from 'react-native-elements';
+import styles from '../styles';
+import { material } from 'react-native-typography';
 
 const DeathScreen = props => {
     const { navigate } = props.navigation;
     return (
-        <View>
-            <Text>You have died...</Text>
-            <Button onPress={() => navigate('Create')} title="Create a game" />
-            <Button onPress={() => navigate('Join')} title="Join a game" />
+        <View style={styles.container}>
+            <Text style={material.display1}>You have died...</Text>
+            <View style={styles.buttonContainer}>
+                <Button type="outline" onPress={() => navigate('Create')} title="NEW GAME" />
+                <Button type="outline" onPress={() => navigate('Join')} title="JOIN GAME" />            
+            </View>
         </View>
     )
 }

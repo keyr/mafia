@@ -1,14 +1,24 @@
 import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Button, Text } from 'react-native-elements';
+import { LinearGradient } from 'expo-linear-gradient';
+import styles from '../styles';
+import { material } from 'react-native-typography';
 
 const StartScreen = props => {
     const { navigate } = props.navigation;
     return (
+        <LinearGradient
+        colors={['lightblue', 'lightpink']}
+        style={styles.container}>
         <View>
-            <Text>Welcome to mafia!</Text>
-            <Button onPress={() => navigate('Create')} title="Create a game" />
-            <Button onPress={() => navigate('Join')} title="Join a game" />
+            <Text style={material.display1White}>Welcome to Mafia</Text>
+            <View style={styles.buttonContainer}>
+                <Button type="outline" onPress={() => navigate('Create')} title="NEW GAME" />
+                <Button type="outline" onPress={() => navigate('Join')} title="JOIN GAME" />            
+            </View>
         </View>
+        </LinearGradient>
     )
 }
 

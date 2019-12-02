@@ -1,6 +1,9 @@
 import React, { useState, useEffect} from 'react';
-import { FlatList, Button, Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { getUsers, leaveGame, listenForInitialize } from '../database';
+import styles from '../styles';
+import { Button } from 'react-native-elements';
+import { material } from 'react-native-typography';
 
 const PlayerScreen = props => {
     const { navigate } = props.navigation;
@@ -38,16 +41,25 @@ const PlayerScreen = props => {
     }
     
     return (
-        <View>
-            <Text>Welcome</Text>
+        <View style={styles.container}>
+            <Text style={material.title}>Waiting for players...</Text>
+            <Text style={material.caption}>Room Name: {roomName}</Text>
+            <Text style={material.caption}>Password: {password}</Text>
+            <Text style={material.body2}>Players: </Text>
             <FlatList
+                style={styles.list}
                 data={listOfUsers}
-                renderItem={({ item }) => <Text>{item}</Text>}
+                renderItem={({ item }) => (
+                    <View style={styles.container}>
+                        <Text style={material.body1}>{item}</Text>
+                    </View>
+                )}
                 keyExtractor={item => item}
             />
             <Button 
+                type = "outline"
                 onPress={() => leave()}
-                title="Leave game"
+                title="LEAVE GAME"
             />
 
         </View>

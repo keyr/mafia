@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { TextInput, Button, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { createGame } from '../database';
+import styles from '../styles';
+import LinearGradient from 'expo-linear-gradient';
+import { Button, Input } from 'react-native-elements';
+import { material } from 'react-native-typography';
 
 const CreateGame = props => {
     const { navigate } = props.navigation;
@@ -16,28 +20,41 @@ const CreateGame = props => {
         navigate('Manage', obj);
     }
     return (
-        <View>
-            <Text>Create a game</Text>
-            <TextInput
+        <View style={styles.container}>
+            <Text style={material.display1}>Create Game</Text>
+            <Input
                 placeholder="Give your room a name"
                 value={roomName}
                 onChangeText={text => changeRoomName(text)}
+                maxLength = {24}
+                autoCorrect = {false}
+                autoCapitalize = 'none'
             />
-            <TextInput
+            <Input
                 placeholder="Give your room a password"
                 value={password}
                 onChangeText={text => changeRoomPW(text)}
+                maxLength = {12}
+                autoCorrect = {false}
+                autoCapitalize = 'none'
             />
-            <TextInput
+            <Input
                 placeholder="Give yourself a name"
                 value={name}
                 onChangeText={text => changeName(text)}
+                maxLength = {12}
+                autoCorrect = {false}
+                autoCapitalize = 'none'
             />
-            <Button onPress = {() => create({
+            <View style={styles.buttonContainer}>
+            <Button 
+                type="outline"
+                onPress = {() => create({
                 roomName: roomName,
                 password: password,
                 name: name
-            })} title = "Create your game" />
+            })} title = "START GAME" />
+            </View>
         </View>
     )
 }
