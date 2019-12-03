@@ -5,6 +5,8 @@ import styles from '../styles';
 import { Button } from 'react-native-elements';
 import { material } from 'react-native-typography';
 
+console.disableYellowBox = true;
+
 const ManagerScreen = props => {
     const { navigate } = props.navigation;
     const {name, password, roomName } = props.navigation.state.params;
@@ -36,6 +38,8 @@ const ManagerScreen = props => {
                         }
                         if (role === 'police') {
                             navigate('Police', obj)
+                        } else if (role === 'doctor') {
+                            navigate('Doctor', obj)
                         } else if (role === true) {
                             navigate('Town', obj)
                         } else if (role === false) {

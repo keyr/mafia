@@ -4,6 +4,8 @@ import { Button } from 'react-native-elements';
 import { changeDay, executePlayer, checkWinner } from '../database';
 import styles from '../styles';
 
+console.disableYellowBox = true;
+
 const Manage = props => {
     const { list, day, roomName } = props;
     return (

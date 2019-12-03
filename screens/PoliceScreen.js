@@ -7,6 +7,8 @@ import styles from '../styles';
 import { LinearGradient } from 'expo-linear-gradient';
 import { material } from 'react-native-typography';
 
+console.disableYellowBox = true;
+
 const PoliceScreen = props => {
     const { navigate } = props.navigation;
     const {name, password, roomName, manager } = props.navigation.state.params;
@@ -51,7 +53,7 @@ const PoliceScreen = props => {
             "Good luck!"}
                 </Text>
                 }
-                height={350}
+                height={400}
             >
                 <Text style={material.caption}>Click me for some tips</Text>
             </Tooltip>

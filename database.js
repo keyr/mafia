@@ -11,6 +11,9 @@ let createGame = (props, callback) => {
                     winner: '',
                     mafiaKilled: false,
                     policeChecked: false,
+                    doctorSaved: false,
+                    killed: '',
+                    saved: '',
                     day: true,
                     users: {
                         [props.name]: true
@@ -30,14 +33,22 @@ let joinGame = (props, callback) => {
     newRef.once('value', function(snapshot) {
         const data = snapshot.val();
         if (data == null) {
-            callback(null);
+            callback('The room does not exist!');
+        } else if (data['started'] === true) {
+            callback('Sorry, this game is already in session.');
         } else if (props.password === data['password']) {
-            db.ref('/games/' + props.roomName + '/users').update({
-                [props.name]: true
-            });
-            callback(true);
+            db.ref('/games/' + props.roomName + '/users/' + props.name).once('value').then(function(s) {
+                if (s.val() == null) {
+                    db.ref('/games/' + props.roomName + '/users').update({
+                        [props.name]: true
+                    });
+                    callback(true);
+                } else {
+                    callback('This username has been taken!');
+                }
+            })
         } else {
-            callback(false);
+            callback('This password is incorrect!')
         }
     })
 }
@@ -85,8 +96,10 @@ let initializeGame = (roomName, callback) => {
         }
         let rand = Math.floor(Math.random() * data.length);
         let police = data.splice(rand, 1)[0];
+        let doctor = data.splice(rand, 1)[0];
         usersRef.update({
-            [police]: 'police'
+            [police]: 'police',
+            [doctor]: 'doctor'
         })
         newRef.update({
             started: true
@@ -113,10 +126,23 @@ let listenForDay = (roomName, callback) => {
 
 let changeDay = (roomName, day) => {
     if (day === false) {
-        db.ref('/games/' + roomName).update({
-            day: true,
-            policeChecked: false,
-            mafiaKilled: false,
+        db.ref('/games/' + roomName + '/saved').once('value').then(function(saved) {
+            db.ref('/games/' + roomName + '/killed').once('value').then(function(killed) {
+                if (saved.val() !== killed.val() && killed.val() !== '') {
+                    db.ref('/games/' + roomName + '/users').update({
+                        [killed.val()]: null
+                    })
+                }
+                console.log('smh');
+                db.ref('/games/' + roomName).update({
+                    day: true,
+                    policeChecked: false,
+                    mafiaKilled: false,
+                    doctorSaved: false,
+                    saved: '',
+                    killed: ''
+                })
+            })
         })
     } else {
         db.ref('/games/' + roomName).update({
@@ -161,10 +187,19 @@ let killPlayer = (roomName, name) => {
     db.ref('/games/' + roomName + '/mafiaKilled').once('value').then(function(checked) {
         if (checked.val() === false) {
             db.ref('/games/' + roomName).update({
-                mafiaKilled: true
+                mafiaKilled: true,
+                killed: name
             })
-            db.ref('/games/' + roomName + '/users').update({
-                [name]: null
+        }
+    })
+}
+
+let savePlayer = (roomName, name) => {
+    db.ref('/games/' + roomName + '/doctorSaved').once('value').then(function(saved) {
+        if (saved.val() === false) {
+            db.ref('/games/' + roomName).update({
+                doctorSaved: true,
+                saved: name
             })
         }
     })
@@ -217,5 +252,5 @@ let listenForDeath = (roomName, name, callback) => {
 
 export { createGame, joinGame, getUsers, leaveGame, removeGame, 
     initializeGame, listenForInitialize, listenForDay, changeDay, 
-    getRole, getMafia, checkAlignment, killPlayer, executePlayer, 
+    getRole, getMafia, checkAlignment, killPlayer, savePlayer, executePlayer, 
     checkWinner, listenForWinner, listenForDeath };

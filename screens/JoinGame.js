@@ -5,6 +5,8 @@ import { joinGame } from '../database';
 import { material } from 'react-native-typography';
 import styles from '../styles';
 
+console.disableYellowBox = true;
+
 const JoinGame = props => {
     const { navigate } = props.navigation;
     const [roomName, changeRoomName] = useState('');
@@ -20,12 +22,10 @@ const JoinGame = props => {
                 password: obj.password,
                 name: obj.name
             }, (success) => {
-                if (success == null) {
-                    changeError('This room does not exist!');
-                } else if (!success) {
-                    changeError('The password for this room is incorrect!')
+                if (success === true) {
+                    navigate('Player', obj);
                 } else {
-                    navigate('Player', obj)
+                    changeError(success);
                 }
             });
         }

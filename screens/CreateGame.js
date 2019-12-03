@@ -5,6 +5,8 @@ import styles from '../styles';
 import { Button, Input } from 'react-native-elements';
 import { material } from 'react-native-typography';
 
+console.disableYellowBox = true;
+
 const CreateGame = props => {
     const { navigate } = props.navigation;
     const [roomName, changeRoomName] = useState('');

@@ -7,6 +7,8 @@ import styles from '../styles';
 import { LinearGradient } from 'expo-linear-gradient';
 import { material } from 'react-native-typography';
 
+console.disableYellowBox = true;
+
 const MafiaScreen = props => {
     const { navigate } = props.navigation;
     const {name, password, roomName, manager } = props.navigation.state.params;

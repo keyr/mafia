@@ -8,26 +8,27 @@ import TownScreen from './screens/TownScreen';
 import PoliceScreen from './screens/PoliceScreen';
 import DeathScreen from './screens/DeathScreen';
 import EndScreen from './screens/EndScreen';
+import DoctorScreen from './screens/DoctorScreen';
 import { createStackNavigator } from 'react-navigation-stack';
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 
-console.disableYellowBow = true;
-console.ignoredYellowBox = [
-  'Setting a timer'
-];
+const StartStack = createStackNavigator({
+  Start: { screen: StartScreen },
+  Create: { screen: CreateGame },
+  Join: { screen: JoinGame }
+})
 
-const Navigator = createStackNavigator(
+const Navigator = createSwitchNavigator(
   {
-    Start: { screen: StartScreen },
-    Create: { screen: CreateGame },
-    Join: { screen: JoinGame },
+    Start: StartStack,
     Manage: { screen: ManagerScreen },
     Player: { screen: PlayerScreen },
     Mafia: { screen: MafiaScreen },
     Town: { screen: TownScreen },
     Police: { screen: PoliceScreen },
     Death: { screen: DeathScreen },
-    End: { screen: EndScreen }
+    End: { screen: EndScreen },
+    Doctor: { screen: DoctorScreen }
   },
   {
     initialRouteName: 'Start',

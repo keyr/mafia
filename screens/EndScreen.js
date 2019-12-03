@@ -4,6 +4,8 @@ import { Button } from 'react-native-elements';
 import styles from '../styles';
 import { material } from 'react-native-typography';
 
+console.disableYellowBox = true;
+
 const EndScreen = props => {
     const { navigate } = props.navigation;
     const { message } = props.navigation.state.params;
@@ -11,8 +13,7 @@ const EndScreen = props => {
         <View style={styles.container}>
             <Text style={material.display1}>{message}</Text>
             <View style={styles.buttonContainer}>
-                <Button type="outline" onPress={() => navigate('Create')} title="NEW GAME" />
-                <Button type="outline" onPress={() => navigate('Join')} title="JOIN GAME" />            
+                <Button type="outline" onPress={() => navigate('Start')} title="GO BACK TO START SCREEN" />     
             </View>
         </View>
     )
