@@ -2,25 +2,37 @@ import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import { createGame } from '../database';
 import styles from '../styles';
-import LinearGradient from 'expo-linear-gradient';
 import { Button, Input } from 'react-native-elements';
 import { material } from 'react-native-typography';
 
 const CreateGame = props => {
     const { navigate } = props.navigation;
     const [roomName, changeRoomName] = useState('');
+    const [error, changeError] = useState('');
     const [password, changeRoomPW] = useState('');
     const [name, changeName] = useState('');
     function create(obj) {
-        createGame({
-            roomName: obj.roomName,
-            password: obj.password,
-            name: obj.name
-        });
-        navigate('Manage', obj);
+        if (obj.roomName === '' || obj.password === '' || obj.name === '') {
+            changeError('None of the fields can be blank!')
+        } else {
+            createGame({
+                roomName: obj.roomName,
+                password: obj.password,
+                name: obj.name
+            }, (success) => {
+                if (success) {
+                    navigate('Manage', obj);
+                } else {
+                    changeError('This room already exists!');
+                }
+            });
+        }
+        
     }
     return (
-        <View style={styles.container}>
+        <View
+            style={styles.container}
+        >
             <Text style={material.display1}>Create Game</Text>
             <Input
                 placeholder="Give your room a name"
@@ -55,6 +67,7 @@ const CreateGame = props => {
                 name: name
             })} title = "START GAME" />
             </View>
+            <Text style={[material.caption, {color: 'red'}]}>{error}</Text>
         </View>
     )
 }

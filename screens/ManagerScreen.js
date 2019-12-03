@@ -8,6 +8,7 @@ import { material } from 'react-native-typography';
 const ManagerScreen = props => {
     const { navigate } = props.navigation;
     const {name, password, roomName } = props.navigation.state.params;
+    const [error, changeError] = useState('');
     const [listOfUsers, changeList] = useState([]);
     useEffect(() => {
         getUsers(roomName, (users) => {
@@ -21,28 +22,35 @@ const ManagerScreen = props => {
     }
 
     function startGame() {
-        initializeGame(roomName, (word) => {
-            if (word === 'done') {
-                getRole(roomName, name, (role) => {
-                    const obj = {
-                        roomName: roomName,
-                        password: password,
-                        name: name, 
-                        manager: true
-                    }
-                    if (role === 'police') {
-                        navigate('Police', obj)
-                    } else if (role === true) {
-                        navigate('Town', obj)
-                    } else if (role === false) {
-                        navigate('Mafia', obj)
-                    }
-                })
-            }
-        })
+        if (listOfUsers.length < 5) {
+            changeError('You must have at least 5 players to begin!');
+        } else {
+            initializeGame(roomName, (word) => {
+                if (word === 'done') {
+                    getRole(roomName, name, (role) => {
+                        const obj = {
+                            roomName: roomName,
+                            password: password,
+                            name: name, 
+                            manager: true
+                        }
+                        if (role === 'police') {
+                            navigate('Police', obj)
+                        } else if (role === true) {
+                            navigate('Town', obj)
+                        } else if (role === false) {
+                            navigate('Mafia', obj)
+                        }
+                    })
+                }
+            })
+        }
+        
     }
     return (
-        <View style={styles.container}>
+        <View 
+            style={styles.container}
+        >
             <Text style={material.title}>Waiting for players...</Text>
             <Text style={material.caption}>Room Name: {roomName}</Text>
             <Text style={material.caption}>Password: {password}</Text>
@@ -69,7 +77,7 @@ const ManagerScreen = props => {
                     title="DELETE GAME"
                 />
             </View>
-
+            <Text style={[material.caption, {color: 'red'}]}>{error}</Text>
         </View>
     )
 }

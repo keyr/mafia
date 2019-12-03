@@ -4,6 +4,7 @@ import { getUsers, listenForDay, checkAlignment, listenForWinner, listenForDeath
 import Manage from './Manage';
 import { Button, Tooltip } from 'react-native-elements'
 import styles from '../styles';
+import { LinearGradient } from 'expo-linear-gradient';
 import { material } from 'react-native-typography';
 
 const PoliceScreen = props => {
@@ -35,7 +36,10 @@ const PoliceScreen = props => {
         })
     }, []);
     return (
-        <View style={styles.container}>
+        <LinearGradient 
+            style={styles.container}
+            colors={['#c9d6ff', '#e2e2e2']}
+        >
             <Tooltip 
                 popover={<Text style={material.caption}>{"If this is your first time " + 
             "playing, keep reading! You are an important member of the town: you don\'t want to " +
@@ -87,7 +91,7 @@ const PoliceScreen = props => {
             />}
             {manager && <Manage list={listOfUsers} day={day} roomName={roomName}></Manage>}
 
-        </View>
+        </LinearGradient>
     )
 }
 

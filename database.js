@@ -1,30 +1,43 @@
 import { db } from './config';
 
-let createGame = props => {
-    db.ref('/games').update({
-        [props.roomName]: {
-            password: props.password,
-            admin: props.name,
-            started: false,
-            winner: '',
-            mafiaKilled: false,
-            policeChecked: false,
-            day: true,
-            users: {
-                [props.name]: true
-            }
+let createGame = (props, callback) => {
+    db.ref('/games/' + props.roomName).once('value', (snapshot) => {
+        if (snapshot.val() == null) {
+            db.ref('/games').update({
+                [props.roomName]: {
+                    password: props.password,
+                    admin: props.name,
+                    started: false,
+                    winner: '',
+                    mafiaKilled: false,
+                    policeChecked: false,
+                    day: true,
+                    users: {
+                        [props.name]: true
+                    }
+                }
+            });
+            callback(true);
+        } else {
+            callback(false);
         }
-    });
+    })
+    
 }
 
-let joinGame = props => {
+let joinGame = (props, callback) => {
     const newRef = db.ref('/games/' + props.roomName);
     newRef.once('value', function(snapshot) {
         const data = snapshot.val();
-        if (props.password === data['password']) {
+        if (data == null) {
+            callback(null);
+        } else if (props.password === data['password']) {
             db.ref('/games/' + props.roomName + '/users').update({
                 [props.name]: true
             });
+            callback(true);
+        } else {
+            callback(false);
         }
     })
 }

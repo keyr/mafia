@@ -4,6 +4,7 @@ import { getUsers, getMafia, listenForDay, killPlayer, listenForWinner, listenFo
 import Manage from './Manage';
 import { Button, Tooltip } from 'react-native-elements'
 import styles from '../styles';
+import { LinearGradient } from 'expo-linear-gradient';
 import { material } from 'react-native-typography';
 
 const MafiaScreen = props => {
@@ -38,7 +39,9 @@ const MafiaScreen = props => {
         })
     }, []);
     return (
-        <View style={styles.container}>
+        <LinearGradient 
+            colors={["#ee9ca7", "#ffffff"]}
+            style={styles.container}>
             <Tooltip 
                 popover={<Text style={material.caption}>{"If this is your first time " + 
             "playing, keep reading! You are a member of the mafia: you don\'t want to " +
@@ -87,7 +90,7 @@ const MafiaScreen = props => {
             /> }
             {manager && <Manage list={listOfUsers} day={day} roomName={roomName}></Manage>}
             
-        </View>
+        </LinearGradient>
     )
 }
 

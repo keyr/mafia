@@ -4,6 +4,7 @@ import { getUsers, listenForDay, listenForWinner, listenForDeath } from '../data
 import { Tooltip } from 'react-native-elements';
 import Manage from './Manage';
 import styles from '../styles';
+import { LinearGradient } from 'expo-linear-gradient';
 import { material } from 'react-native-typography';
 
 const TownScreen = props => {
@@ -34,14 +35,17 @@ const TownScreen = props => {
         })
     }, []);
     return (
-        <View style={styles.container}>
+        <LinearGradient 
+            style={styles.container}
+            colors={['#c9d6ff', '#e2e2e2']}
+        >
             <Tooltip 
                 popover={<Text style={material.caption}>{"If this is your first time " + 
             "playing, keep reading! You are a member of the town: you want to be as " +
-            "open and helpful as possible.\n\n " +
+            "open and helpful as possible.\n\n" +
             "The goal of this game is to eliminate every single mafia member. However, " +
             "remember that you lose if at any point, the number of mafia is equal to " +
-            "the number of people left in town.\n\n " + 
+            "the number of people left in town.\n\n" + 
             "Good luck!"}
                 </Text>
                 }
@@ -68,7 +72,7 @@ const TownScreen = props => {
                 keyExtractor={item => item}
             />
             {manager && <Manage list={listOfUsers} day={day} roomName={roomName}></Manage>}
-        </View>
+        </LinearGradient>
     )
 }
 

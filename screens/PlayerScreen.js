@@ -41,7 +41,9 @@ const PlayerScreen = props => {
     }
     
     return (
-        <View style={styles.container}>
+        <View
+            style={styles.container}
+        >
             <Text style={material.title}>Waiting for players...</Text>
             <Text style={material.caption}>Room Name: {roomName}</Text>
             <Text style={material.caption}>Password: {password}</Text>
